@@ -28,7 +28,7 @@ jobs:
       run: msbuild BorderlessGaming.sln /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal
       
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: BorderlessGaming-build
         path: |
