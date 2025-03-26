@@ -1,0 +1,36 @@
+name: Build BorderlessGaming
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: '15.0'  # This specifies Visual Studio 2017
+        
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      
+    - name: Restore NuGet packages
+      run: nuget restore BorderlessGaming.sln
+      
+    - name: Build solution
+      run: msbuild BorderlessGaming.sln /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: BorderlessGaming-build
+        path: |
+          **/bin/Release/**
+          !**/obj/**
